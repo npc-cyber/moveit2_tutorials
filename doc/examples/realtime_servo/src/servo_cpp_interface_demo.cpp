@@ -48,7 +48,7 @@
 
 using namespace std::chrono_literals;
 
-static const rclcpp::Logger LOGGER = rclcpp::get_logger("moveit2_tutorials.servo_demo_node.cpp");
+static const rclcpp::Logger LOGGER = rclcpp::get_logger("moveit2_tutorials.servo_demo_node_test.cpp");
 
 // BEGIN_TUTORIAL
 
@@ -100,7 +100,7 @@ int main(int argc, char** argv)
 
   // This is false for now until we fix the QoS settings in moveit to enable intra process comms
   node_options.use_intra_process_comms(false);
-  node_ = std::make_shared<rclcpp::Node>("servo_demo_node", node_options);
+  node_ = std::make_shared<rclcpp::Node>("servo_demo_node_test", node_options);
 
   // Pause for RViz to come up. This is necessary in an integrated demo with a single launch file
   rclcpp::sleep_for(std::chrono::seconds(4));
@@ -130,8 +130,9 @@ int main(int argc, char** argv)
   // These are the publishers that will send commands to MoveIt Servo. Two command types are supported: JointJog
   // messages which will directly jog the robot in the joint space, and TwistStamped messages which will move the
   // specified link with the commanded Cartesian velocity. In this demo, we jog the end effector link.
-  joint_cmd_pub_ = node_->create_publisher<control_msgs::msg::JointJog>("servo_demo_node/delta_joint_cmds", 10);
-  twist_cmd_pub_ = node_->create_publisher<geometry_msgs::msg::TwistStamped>("servo_demo_node/delta_twist_cmds", 10);
+  // 这个地方是发送控制命令的 但是是怎么接收的呢 
+  joint_cmd_pub_ = node_->create_publisher<control_msgs::msg::JointJog>("servo_demo_node_test/test_joint_cmds", 10);
+  twist_cmd_pub_ = node_->create_publisher<geometry_msgs::msg::TwistStamped>("servo_demo_node_test/test_twist_cmds", 10);
 
   // Next we will create a collision object in the way of the arm. As the arm is servoed towards it, it will slow down
   // and stop before colliding
@@ -185,7 +186,7 @@ int main(int argc, char** argv)
   // Sending Commands
   // ^^^^^^^^^^^^^^^^
   // For this demo, we will use a simple ROS timer to send joint and twist commands to the robot
-  rclcpp::TimerBase::SharedPtr timer = node_->create_wall_timer(50ms, publishCommands);
+  // rclcpp::TimerBase::SharedPtr timer = node_->create_wall_timer(50ms, publishCommands);
 
   // CALL_SUB_TUTORIAL publishCommands
 

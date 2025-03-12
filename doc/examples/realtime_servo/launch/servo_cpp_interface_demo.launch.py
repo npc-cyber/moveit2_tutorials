@@ -24,6 +24,7 @@ def generate_launch_description():
     )
 
     # A node to publish world -> panda_link0 transform
+    # 这边直接把世界坐标系定义在panda_link0上了
     static_tf = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
@@ -71,6 +72,7 @@ def generate_launch_description():
     )
 
     # ros2_control using FakeSystem as hardware
+    # 这个是不接收硬件的
     ros2_control_node = Node(
         package="controller_manager",
         executable="ros2_control_node",
@@ -87,6 +89,7 @@ def generate_launch_description():
 
     # Load controllers
     load_controllers = []
+    # 控制器在这里加入的 机械臂控制器 机械臂状态广播器
     for controller in ["panda_arm_controller", "joint_state_broadcaster"]:
         load_controllers += [
             ExecuteProcess(
